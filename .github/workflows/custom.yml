@@ -4,50 +4,42 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version number'
+        description: "Release version (e.g., v1.0.1)"
         required: true
-        default: 'v1.0.0'
 
 jobs:
-  generate-release-notes:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Generate changelog file
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          echo "# Release $VERSION" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "## Recent Commits" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          git log -n 10 --pretty=format:"- %s" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "Generated on $(date)" >> CHANGELOG.md
+
+      - name: Display changelog
+        run: cat CHANGELOG.md
+
+      - name: Upload changelog as artifact
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '18'
+          name: CHANGELOG
+          path: CHANGELOG.md
 
-      - name: Generate release notes
-        id: notes
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: commits } = await github.rest.repos.listCommits({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              per_page: 20
-            });
-
-            const changes = commits.map(c => `- ${c.commit.message}`).join('\n');
-            const notes = `## Release Notes for ${{ github.event.inputs.version }}\n\n${changes}`;
-            core.setOutput('notes', notes);
-
-      - name: Create GitHub Release
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.version }}
-          name: "Release ${{ github.event.inputs.version }}"
-          body: ${{ steps.notes.outputs.notes }}
+          name: Release ${{ github.event.inputs.version }}
+          body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Release Notes Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-notes
-          path: ./CHANGELOG.md
-
