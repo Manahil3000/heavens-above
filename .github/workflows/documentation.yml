@@ -1,4 +1,4 @@
-name: Documentation Deployment
+name: Documentation Deploy
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          
+
       - name: Build documentation
         run: |
           mkdir -p public
