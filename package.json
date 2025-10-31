@@ -7,9 +7,7 @@
   "scripts": {
     "start": "node run.js",
     "test": "echo \"No test specified\"",
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "build": "echo \" Build step (no build process needed, skipping)\""
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
@@ -31,8 +29,6 @@
   "homepage": "https://github.com/PKUPI/heavens-above#readme",
   "engines": {
     "node": ">=12.10.0"
-  },
-  "devDependencies": {
-    "vite": "^7.1.12"
   }
+
 }
