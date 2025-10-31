@@ -1,12 +1,9 @@
-name: Documentation Deployment
+name: Deploy Heavens-Above to GitHub Pages
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'docs/**'
-      - '.github/workflows/documentation.yml'
 
 permissions:
   contents: read
@@ -14,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy-docs:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     environment:
@@ -30,19 +27,16 @@ jobs:
         with:
           node-version: 18
 
-      - name: Build documentation
-        run: |
-          mkdir -p public
-          if [ -d "docs" ]; then
-            cp -r docs/* public/
-          else
-            echo "<h1>Heavens Above Documentation</h1><p>No docs found.</p>" > public/index.html
-          fi
+      - name: Install dependencies
+        run: npm install
 
-      - name: Upload documentation
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build output
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./build
 
       - name: Deploy to GitHub Pages
         id: deployment
