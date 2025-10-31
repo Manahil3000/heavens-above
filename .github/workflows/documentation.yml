@@ -1,4 +1,4 @@
-name: Deploy Heavens-Above Documentation
+name: Deploy static site to GitHub Pages
 
 on:
   push:
@@ -13,7 +13,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -22,24 +21,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Prepare static site
-        run: |
-          mkdir -p public
-          cp -r * public/
-          echo "<h1>Heavens Above Documentation</h1>" > public/index.html
-
-      - name: Upload site
+      - name: Upload site files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./
 
       - name: Deploy to GitHub Pages
         id: deployment
