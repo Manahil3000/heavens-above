@@ -4,11 +4,18 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'docs/**' # triggers only when documentation changes
+      - '.github/workflows/documentation.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-docs:
+  build-and-deploy-docs:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,15 +25,20 @@ jobs:
         with:
           node-version: 18
 
-      - name: Generate documentation
+      - name: Build documentation
         run: |
-          mkdir -p docs
-          echo "<h1>Project Documentation</h1><p>Deployed via GitHub Actions!</p>" > docs/index.html
+          mkdir -p public
+          if [ -d "docs" ]; then
+            cp -r docs/* public/
+          else
+            echo "<h1>Heavens Above Documentation</h1><p>No docs found.</p>" > public/index.html
+          fi
 
-      - name: Commit and push docs
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs
-          git commit -m "Update documentation" || echo "No changes to commit"
-          git push
+      - name: Upload documentation
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
