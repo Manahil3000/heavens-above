@@ -1,28 +1,23 @@
-name: Deploy Heavens Above Website
+name: Deploy Documentation
 
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -31,18 +26,15 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build project
-        run: npm run build || echo "No build step defined, skipping..."
+      - name: Build site
+        run: npm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site files
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./  # Root of your website (you can change to 'dist' or 'build' if needed)
+          path: ./build   
 
       - name: Deploy to GitHub Pages
         id: deployment
