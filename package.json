@@ -1,30 +1,41 @@
-name: Documentation Deployment
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy-docs:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Generate documentation
-        run: |
-          mkdir -p docs
-          echo "<!DOCTYPE html><html><head><title>Heavens Above Docs</title></head><body><h1>Heavens Above Project</h1><p>This documentation was automatically deployed using GitHub Actions.</p></body></html>" > docs/index.html
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+{
+  "name": "heavens-above",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A web project for Heavens Above — satellite data and visualization.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "generate-docs": "mkdir -p docs && echo '<h1>Heavens Above Project</h1><p>Documentation generated via GitHub Actions.</p>' > docs/index.html"
+  },
+  "keywords": [
+    "heavens-above",
+    "satellite",
+    "vite",
+    "web"
+  ],
+  "author": "Manahil",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Manahil3000/heavens-above.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Manahil3000/heavens-above/issues"
+  },
+  "homepage": "https://Manahil3000.github.io/heavens-above/",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12",
+    "eslint": "^9.12.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
