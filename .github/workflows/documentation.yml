@@ -19,12 +19,12 @@ jobs:
 
       - name: Build documentation
         run: |
-          mkdir -p public
+          mkdir -p docs
           if [ -d "docs" ]; then
-            cp -r docs/* public/
+            cp -r docs/* docs/
           else
-            echo "No docs folder found, creating default index.html"
-            echo "<h1>Documentation Site</h1><p>Auto-generated documentation.</p>" > public/index.html
+            echo "No docs folder found creating default index.html"
+            echo "<h1>Documentation Site</h1><p>Auto-generated documentation.</p>" > docs/index.html
           fi
 
       - name: Deploy to GitHub Pages
