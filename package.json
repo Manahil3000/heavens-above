@@ -2,40 +2,37 @@
   "name": "heavens-above",
   "version": "1.0.0",
   "private": true,
-  "description": "A web project for Heavens Above — satellite data and visualization.",
-  "main": "index.js",
+  "description": "Scripts for scraping the Heavens Above website.",
+  "main": "run.js",
   "scripts": {
+    "start": "node run.js",
+    "test": "echo \"No test specified\"",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "generate-docs": "mkdir -p docs && echo '<h1>Heavens Above Project</h1><p>Documentation generated via GitHub Actions.</p>' > docs/index.html"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
-  "keywords": [
-    "heavens-above",
-    "satellite",
-    "vite",
-    "web"
-  ],
-  "author": "Manahil",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Manahil3000/heavens-above.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Manahil3000/heavens-above/issues"
-  },
-  "homepage": "https://Manahil3000.github.io/heavens-above/",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0-rc.3",
     "request": "^2.88.2"
   },
-  "devDependencies": {
-    "vite": "^7.1.12",
-    "eslint": "^9.12.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PKUPI/heavens-above.git"
   },
+  "keywords": [
+    "Heavens Above",
+    "spider"
+  ],
+  "author": "Mimi <stevenjoezhang@gmail.com> (https://zhangshuqiao.org)",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/PKUPI/heavens-above/issues"
+  },
+  "homepage": "https://github.com/PKUPI/heavens-above#readme",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=12.10.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12"
   }
 }
