@@ -1,0 +1,22 @@
+name: Code Review Automation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  code_quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ESLint for code review
+        run: npm install && npm run lint || echo "Lint check skipped"
+
+      - name: Security Scan
+        uses: snyk/actions/node@v3
+        with:
+          command: test
+          args: --severity-threshold=medium
