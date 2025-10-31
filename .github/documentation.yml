@@ -1,0 +1,47 @@
+name: Documentation Deployment
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/documentation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      # Optional: If your docs are built with a specific framework like VitePress or Docusaurus
+      - name: Build Documentation
+        run: |
+          if [ -d "docs" ]; then
+            npm run docs:build || echo "No docs build script found, skipping build."
+          else
+            echo "No docs directory found, skipping build."
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/dist  # For VitePress or similar
+          # If your static docs are directly in /docs (like Markdown only), use:
+          # publish_dir: ./docs
+
+      - name: Deployment Complete
+        run: echo "Documentation deployed successfully!"

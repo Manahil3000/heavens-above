@@ -6,10 +6,8 @@
   "main": "run.js",
   "scripts": {
     "start": "node run.js",
-    "build": "vite build",
-    "test":"echo \"No test specified\"" 
+    "test": "echo \"No test specified\""
   },
-
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "request": "^2.88.2"
@@ -30,5 +28,8 @@
   "homepage": "https://github.com/PKUPI/heavens-above#readme",
   "engines": {
     "node": ">=12.10.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12"
   }
 }
